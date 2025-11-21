@@ -1,0 +1,97 @@
+---
+title: "slide_examples"
+author: "JNS"
+format: html
+editor: visual
+---
+
+```{r setup}
+#| include: false
+
+library(knitr)
+options(htmltools.dir.version = FALSE, tibble.width = 45)
+opts_chunk$set(
+  echo = TRUE, 
+  warning = FALSE, 
+  message = FALSE, 
+  error=FALSE, 
+  comment = "#",
+  fig.align = 'center', 
+  fig.retina = 5,
+  out.width = "80%",
+  fig.show = 'hold',
+  cache = FALSE
+)
+
+# libraries
+library(biplotEZ) ; library(gganimate) ; library(ggplot2) ; library(moveEZ) ; library(dplyr) ; library(readr)
+
+```
+
+```{r}
+AFR <- read_csv("data/AFR_1940_2020_decade.csv")
+AUS <- read_csv("data/AUS_1940_2020_decade.csv")
+EUR <- read_csv("data/EUR_1940_2020_decade.csv")
+
+AFR <- AFR |> mutate(across(c("Year", "Region", "Month"), as.factor))
+AUS <- AUS |> mutate(across(c("Year", "Region", "Month"), as.factor))
+EUR <- EUR |> mutate(across(c("Year", "Region", "Month"), as.factor))
+
+AFR <- AFR |> select(-c("v10", "si10","sp"))
+AUS <- AUS |> select(-c("v10", "si10","sp"))
+EUR <- EUR |> select(-c("v10", "si10","sp"))
+```
+
+## AFRICA
+
+```{r}
+bpAFR <- biplot(AFR, scaled = TRUE) |> PCA() |> fit.measures()
+
+bpAFR$quality
+bpAFR$axis.predictivity
+
+
+bpAFR |> moveplot(time.var = "Year", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
+
+```{r}
+bpAFR |> moveplot(time.var = "Region", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
+
+## EUROPE
+
+```{r}
+bpEUR <- biplot(EUR, scaled = TRUE) |> PCA() |> fit.measures()
+
+bpEUR$quality
+bpEUR$axis.predictivity
+
+
+bpEUR |> moveplot(time.var = "Year", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
+```{r}
+bpEUR |> moveplot(time.var = "Region", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
+
+
+## AUSTRALIA
+
+```{r}
+bpAUS <- biplot(AUS, scaled = TRUE) |> PCA() |> fit.measures()
+
+bpAUS$quality
+bpAUS$axis.predictivity
+
+
+bpAUS |> moveplot(time.var = "Year", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
+
+```{r}
+bpAUS |> moveplot(time.var = "Region", group.var = "Region", move = FALSE, 
+                   hulls = TRUE, scale.var = 10)
+```
