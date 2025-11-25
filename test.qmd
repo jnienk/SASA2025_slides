@@ -1,0 +1,88 @@
+---
+title: "Part3_test"
+author: "JNS"
+date: "25 November 2025"
+format: 
+  revealjs:
+    theme: moon
+editor: visual
+---
+
+## Quarto
+
+This is an example of a slide. Look at me using a list:
+-   Point 1
+-   **Point 2**
+-   Now I will add code in the next slide
+
+## My first code chunk
+
+```{r}
+#| echo: false
+library(biplotEZ)
+
+bp <- biplot(iris, group.aes = iris[,5]) |> 
+  PCA() |> 
+  samples(col = c("pink", "yellow", "cyan")) |> 
+  axes(col = "purple") |> 
+  plot()
+```
+
+## plotly
+
+```{r}
+library(plotly)
+
+p <- ggplot(mtcars, aes(hp, mpg, color = factor(cyl))) +
+  geom_point(size = 3, alpha = 0.85) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_minimal() +
+  labs(
+    title = "Fuel Efficiency vs Horsepower",
+    x = "Horsepower", y = "Miles per Gallon", color = "Cyl"
+  )
+ggplotly(p)
+```
+
+
+##
+
+```{r}
+library(echarts4r)
+iris |> 
+  group_by(Species) |> 
+  e_charts(Sepal.Length) |> 
+  e_line(Sepal.Width) |> 
+  #e_lm(Sepal.Width ~ Sepal.Length) |> 
+  e_x_axis(min = 4)
+```
+
+## testing columns
+
+::: columns
+
+::: {.column width="60%"}
+This is a bigger column:
+**column 1**
+
+:::
+
+::: {.column width="30%"}
+**column2 **
+:::
+
+:::
+
+
+## checking how callouts work
+
+::: callout-tip
+### Big tip
+Quarto's tip callout.
+:::
+
+##
+
+::: callout-important
+### I want to know
+:::

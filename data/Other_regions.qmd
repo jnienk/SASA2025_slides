@@ -37,9 +37,9 @@ AFR <- AFR |> mutate(across(c("Year", "Region", "Month"), as.factor))
 AUS <- AUS |> mutate(across(c("Year", "Region", "Month"), as.factor))
 EUR <- EUR |> mutate(across(c("Year", "Region", "Month"), as.factor))
 
-AFR <- AFR |> select(-c("v10", "si10","sp"))
-AUS <- AUS |> select(-c("v10", "si10","sp"))
-EUR <- EUR |> select(-c("v10", "si10","sp"))
+AFR <- AFR |> select(-c("v10", "si10", "sp", "cdir", "avg_pevr"))
+AUS <- AUS |> select(-c("v10", "si10", "sp", "cdir", "avg_pevr"))
+EUR <- EUR |> select(-c("v10", "si10", "sp", "cdir", "avg_pevr"))
 ```
 
 ## AFRICA
