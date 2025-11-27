@@ -267,9 +267,7 @@ Using the previously created PCA biplot object `bp`, the `moveplot()` function e
 
 -   `scale.var`: A numerical value to scale the vectors.
 
-::: fragment
 `move`: A logical argument that controls whether the biplot is animated. If set to `TRUE`, the sample points are animated across time. If set to `FALSE`, the function returns a faceted plot showing a static biplot for each time level. <br> `shadow`: A logical argument that controls whether samples of previous time points are still displayed as time moves forward (*burn-in* of previous states). Only works when `move = TRUE` and `hulls = FALSE`.
-:::
 
 ## `moveplot()`
 
@@ -285,21 +283,7 @@ bp |> moveplot(time.var = "Year", group.var = "Region", hulls = FALSE, move = FA
 bp |> moveplot(time.var = "Year", group.var = "Region", hulls = FALSE, move = FALSE)
 ```
 
-## `moveplot()`: shifting perspective
-
-```{r echo=TRUE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot(time.var = "Region", group.var = "Region", hulls = FALSE, move = FALSE)
-```
-
-```{r echo=FALSE, eval=TRUE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot(time.var = "Region", group.var = "Region", hulls = FALSE, move = FALSE)
-```
-
-## `moveplot()`: global perspective
+## `moveplot()`: Insider tip!
 
 ::::: columns
 ::: {.column width="45%"}
@@ -330,6 +314,20 @@ bp_overall |> moveplot(time.var = "Overall",
 ```
 :::
 :::::
+
+## `moveplot()`: shifting perspective
+
+```{r echo=TRUE, eval=FALSE}
+#| fig-width: 9
+#| fig-height: 6
+bp |> moveplot(time.var = "Region", group.var = "Region", hulls = FALSE, move = FALSE)
+```
+
+```{r echo=FALSE, eval=TRUE}
+#| fig-width: 9
+#| fig-height: 6
+bp |> moveplot(time.var = "Region", group.var = "Region", hulls = FALSE, move = FALSE)
+```
 
 
 ## `moveplot()`
@@ -370,7 +368,9 @@ anim_save("animations/bp2.gif", animation = last_animation())
 ## Dynamic Frame
 
 ::: fragment
-Separate biplots are constructed for each time slice of the data. Both the sample points and variable axes evolve over time, resulting in a fully dynamic animation that reflects temporal changes in the underlying data structure.
+-   Separate biplots for each time slice of the data. 
+-   Extends the animation to both the sample points and the variable axes.
+-   Fully dynamic animation to reflect temporal changes in the underlying data structure.
 :::
 
 <br>
@@ -421,163 +421,29 @@ Separate biplots are constructed for each time slice of the data. Both the sampl
 ```
 :::
 
-## `moveplot2()`
+# 2 options in `moveEZ`
+::: panel-tabset
+### `moveplot2()`
 
-::: font-large
--   The `moveplot2()` function extends the animation to both the sample points and the variable axes.
+```{r echo=TRUE, eval=FALSE}
+#| fig-width: 9
+#| fig-height: 6
+bp |> moveplot2(time.var = "Year", group.var = "Region", align.time = "1950", reflect = "x")
+```
 
--   Unlike `moveplot()`, which keeps the variable axes fixed, `moveplot2()` constructs a separate biplot for each time slice, allowing both components to evolve over time.
+![](animations/bp4.gif){fig-align="center" width="40%"}
 
--   The function shares the same arguments as `moveplot()`, with the `move` argument determining whether the animation is shown or presented as static facets for samples and variables. Setting `move = TRUE` produces an animated biplot in which both the samples and variables transition across time.
+### `moveplot3()`
+```{r echo=TRUE, eval=FALSE}
+#| fig-width: 9
+#| fig-height: 6
+bp |> moveplot3(time.var = "Year", group.var = "Region", target = NULL)
+```
+
+![](animations/bp5.gif){fig-align="center" width="40%"}
 :::
 
-## `moveplot2()`
-
-Additional enhancements include reflections to align the biplots if needed. <br>
-
-Available options include:
-
--   `"x"` – Reflect about the x-axis
-
--   `"y"` – Reflect about the y-axis
-
--   `"xy"` – Reflect about both axes
-
-Both `align.time` and `reflect` can be vectors when alignment is needed at multiple time points with each entry in `reflect` corresponding to a time point in `align.time`.
-
-## `moveplot2()`
-
-```{r echo=TRUE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot2(time.var = "Year", group.var = "Region", hulls = TRUE, move = FALSE)
-```
-
-```{r echo=FALSE, eval=TRUE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot2(time.var = "Year", group.var = "Region", hulls = TRUE, move = FALSE)
-```
-
-## `moveplot2()`
-
-Here, the biplot is aligned at the 1950 time point by reflection about the x-axis.
-
-```{r echo=FALSE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp4 <- bp |> 
-  moveplot2(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE, align.time = "1950", reflect = "x")
-anim_save("animations/bp4.gif", animation = last_animation())
-```
-
-```{r echo=TRUE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> 
-  moveplot2(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE, align.time = "1950", reflect = "x")
-```
-
-![](animations/bp4.gif){fig-align="center" width="60%"}
-
-```{r echo=FALSE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp4 <- bp |> moveplot2(time.var = "Year", group.var = "Region", hulls = TRUE, 
-                move = TRUE, align.time = "1950", reflect = "x")
-anim_save("animations/bp4.gif", animation = last_animation())
-```
-
-## Dynamic Frame: configurative matching
-
--   As before, separate biplots are constructed for each time slice of the data.
-
--   Now, the biplots are aligned according to a specific **target**:
-
-    -   Default: the average of the separate biplot coordinates is calculated and used as a **target**.
-
-    -   Option: specify a **target** (e.g. a specific year)
-
--   Generalised orthogonal Procrustes Analysis (GPA) is used to transform each biplot to the target:
-
-    -   translation, scaling, rotation and reflection
-
--   Results in an aligned animation to expose subtle temporal changes that occur over time.
-
-## GPA methodology
-
-::::: columns
-::: column
--   Image 1: ${\bf{A}}$ is the target visualisation
--   Image 2: ${\bf{B}}$ is the testee visualisation, figures are already centred (translation not required)
--   Image 3: The coordinates of ${\bf{B}}$ are reflected
--   Image 4: The coordinates of ${\bf{B}}$ are rotated and scaled
-
-```         
-Borg, I. & Groenen, P. 2005. Modern Multidimensional Scaling. 2nd ed. United States of America: Springer. (Page 433)
-```
-:::
-
-::: column
-![](images/Procrustes_img.jpg){.large-image}
-:::
-:::::
-
-## `moveplot3()`
-
-This function shares the same arguments as `moveplot()` and `moveplot2()`, with the addition of the `target` argument:
-
--   `target = NULL` - use the average of available biplots
--   `target = Africa_climate_target` - use of a specific target dataset
-
-To illustrate the use of a fixed target, consider the year 1989 from the `Africa_climate` data set, which consists of the same variables and number of observations:
-
-```{r, echo = FALSE}
-data("Africa_climate_target")
-
-display_data <- Africa_climate_target 
-library(DT)
-datatable(display_data, rownames = FALSE, 
-          options = list(pageLength = 5, dom = "tp"))
-```
-
-## `moveplot3()`
-
-```{r echo=TRUE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE, target = NULL)
-```
-
-![](animations/bp5.gif){fig-align="center" width="60%"}
-
-```{r echo=FALSE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp5 <- bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE,
-                target = NULL)
-anim_save("animations/bp5.gif", animation = last_animation())
-```
-
-## `moveplot3()`
-
-```{r echo=TRUE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE, target = Africa_climate_target)
-```
-
-![](animations/bp6.gif){fig-align="center" width="60%"}
-
-```{r echo=FALSE, eval=FALSE}
-#| fig-width: 9
-#| fig-height: 6
-bp6 <- bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = TRUE, 
-                target = Africa_climate_target)
-anim_save("animations/bp6.gif", animation = last_animation())
-```
-
-## Quantifying the movement
+## `evaluation()`
 
 In conjunction with `moveplot3()`, five measures of comparison can be calculated to measure the difference between the target display and the display representing every other time point.
 
@@ -589,15 +455,19 @@ In conjunction with `moveplot3()`, five measures of comparison can be calculated
 
 This can be extracted as tables or line graphs.
 
-```{r, eval = FALSE, output = FALSE}
-results <- bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = FALSE, 
-                target = Africa_climate_target) |> evaluation()
+# Quantifying the change
+
+::: panel-tabset
+
+### Measures of comparison
+::::: columns
+::: {.column width="50%"}
+
+```{r}
+#| include: false
+data(Africa_climate_target)
 ```
 
-## Table of evaluation measures
-
-::::: columns
-::: {.column width="40%"}
 ```{r, eval = TRUE, results = FALSE, echo = FALSE, include = FALSE}
 results <- bp |> moveplot3(time.var = "Year", group.var = "Region", hulls = TRUE, move = FALSE, 
                 target = Africa_climate_target) |> evaluation()
@@ -612,7 +482,7 @@ print(knitr::kable(results$eval.list[3:4], format = "simple"))
 ```
 :::
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 ```{r, echo = FALSE}
 print(knitr::kable(results$eval.list[5:6], format = "simple"))
 ```
@@ -623,24 +493,35 @@ print(knitr::kable(results$eval.list[7:8], format = "simple"))
 :::
 :::::
 
-## `moveplot3()`
 
+### Line graphs
+
+::::: columns
+::: {.column width="50%"}
 ```{r}
 #| fig-width: 9
 #| fig-height: 6
 results$bias.plot
 ```
+:::
 
-## `moveplot3()`
-
+::: {.column width="50%"}
 ```{r}
 #| fig-width: 9
 #| fig-height: 6
 results$fit.plot
 ```
+:::
+::::: 
+:::
 
+# More information
 
-## Acknowledgements
+[Package website](https://muvisu.github.io/moveEZ/)
+
+<img src="images/moveEZ_logo.png" height="120px" style="vertical-align:middle;"/>
+
+# Acknowledgements
 
 We acknowledge the support and contributions of:
 
