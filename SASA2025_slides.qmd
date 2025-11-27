@@ -1,5 +1,5 @@
 ---
-title: "Climate change biplots with `moveEZ`"
+title: "Animated climate change biplots with `moveEZ`"
 author: "Johané Nienkemper-Swanepoel & Raeesa Ganey<br>`nienkemperj@sun.ac.za` & `raeesa.ganey@wits.ac.za`<br><br>"
 subtitle: "<br>Centre for Multi-Dimensional Data Visualisation (MuViSU)<br>  Department of Statistics and Actuarial Science, Stellenbosch University<br> School of Statistics and Actuarial Science, University of the Witwatersrand, Johannesburg, South Africa <br><br><br>**SASA conference: 28 November 2025**"
 format: 
